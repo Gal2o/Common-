@@ -33,7 +33,7 @@
       job.Frontend();
       job.DevObs();
     ```
-    - #### 🟢 역할 별로 클래스를 분리하여 사용합니다
+    - #### 🟢 역할 별로 클래스를 분리하여 독립적으로 모듈화가 가능해진다
     ``` java
       // 좋은 예시
        public class Job {
@@ -174,4 +174,90 @@
       }
     ```
     - #### 이렇게 변경 없이 확장 가능한 구조를 만들 수 있다.
+  --------
+  - ### LSP : 리스코프 치환 원칙 (Liskov Substitution Principle) <br><br> <img src="https://user-images.githubusercontent.com/35948339/136980261-3b794bc7-9bd2-4769-abb2-1852ae37ad27.png" width=600>
+    - #### `상위 타입의 객체`를 `하위 타입의 객체로 치환해도` 상위 타입을 사용하는 메소드는 정상적으로 작동해야 한다
+    - #### 대표적인 예제인 직사각형/정사각형 예제
+    ``` java
+      // 부모인 직사각형
+      class Rectangle {
+        protected int width = -1;
+        protected int height = -1;
 
+        public get width() {
+          return this.width;
+        }
+        public set width(int w) {
+          this.width = w;
+        }
+
+        public get height() {
+          return this.height;
+        }
+        public set height(int h) {
+          this.height = h;
+        }
+
+        public get area() {
+          return this.width * this.height;
+        }
+      }
+
+      // 자식인 정사각형
+      class Square extends Rectangle {
+        // 정사각형은 가로, 세로가 같으므로 재정의
+        public set width(int w) {
+          this.width = w;
+          this.height = w;
+        }
+
+        public set height(int h) {
+          this.width = h;
+          this.height = h;
+        }
+      }
+    ```
+    ``` java
+      Rectangle rectangle = new Rectangle();
+      rectangle.width = 3;
+      rectangle.height = 4;
+      
+      System.out.println(rectangle.area() == 12) => true
+      
+      Rectangle square = new Square();
+      square.width = 3;
+      square.height = 4;
+      
+      System.out.println(square.area() == 12) => false !!
+    ```
+    - #### 위 결과처럼, 논리상으로 `정사각형은 직사각형`이지만, `직사각형은 정사각형`이 아니다 <br><br> 를 코드로 상속 관계를 반영할 수 있지만 결과가 다르므로, `상속 관계로 존재할 수 없다`를 알 수 있다
+    ``` java
+      // 더 포괄적인 Shape를 상속 받도록 리팩토링
+      interface Shape {
+         int area;
+      }
+
+      class Rectangle implements Shape {
+        constructor(int number, int height) { }
+
+        public get area() {
+          return this.width * this.height;
+        }
+      }
+
+      class Square implements Shape {
+        constructor(int width) { }
+
+        public get area() {
+          return this.width * this.width;
+        }
+      }
+    ```
+    ``` java
+      Shape rectangle = new Rectangle(3, 4);
+      System.out.println(rectangle.area()) ==> 12 
+      
+      Shape square = new Square(4);
+      System.out.println(square.area()) ==> 16 
+    ```
+    - #### ⭐상위 타입의 객체를 하위 타입에서도 그대로 지킬 수 있을 때, 상속을 해야 한다 <br><br> ‼ LSP가 지켜지지 않으면 개방 폐쇄 원칙도 위반하게 되므로, 상속을 잘 정의해야 한다
