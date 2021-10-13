@@ -261,3 +261,173 @@
       System.out.println(square.area()) ==> 16 
     ```
     - #### ⭐상위 타입의 객체를 하위 타입에서도 그대로 지킬 수 있을 때, 상속을 해야 한다 <br><br> ‼ LSP가 지켜지지 않으면 개방 폐쇄 원칙도 위반하게 되므로, 상속을 잘 정의해야 한다
+  -------
+  - ### ISP : 인터페이스 분리 원칙 (Interface Segregation Principle) <br><br> <img src="https://user-images.githubusercontent.com/35948339/137154749-538e51a4-13db-47a5-9c30-1c854d7a293a.png" width=600>
+    - #### 클라이언트는 `사용하지 않는 메서드`에 의존적이지 않아야 한다. <br><br> 즉, `일부 기능만을 사용`하는 클라이언트는 `사용하지 않는 기능은 알 필요가 없다`.
+    - #### 대표적인 예인, 복합기를 예를 들면 다음과 같다
+    ``` java
+      // 복합기 인터페이스
+      public interface AllInOneDevice {
+          void print();
+
+          void copy();
+
+          void fax();
+      }
+    ```
+    ``` java
+      // 복합기의 모든 기능을 가진 MFP
+      public class MultiFunctionPrinter implements AllInOneDevice {
+          @Override
+          public void print() {
+              System.out.println("print");
+          }
+
+          @Override
+          public void copy() {
+              System.out.println("copy");
+          }
+
+          @Override
+          public void fax() {
+              System.out.println("fax");
+          }
+      }
+    ```
+    - #### 하지만, 인쇄 기능만 필요한 프린터를 위 인터페이스를 이용하여 구현한다면❓
+    ``` java
+      public class Printer implements AllInOneDevice {
+          @Override
+          public void print() {
+              System.out.println("print");
+          }
+
+          @Override
+          public void copy() {
+              throw new UnsupportedOperationException();
+          }
+
+          @Override
+          public void fax() {
+              throw new UnsupportedOperationException();
+          }
+      }
+    ```
+    - #### 인쇄 기능은 적절하게 오버라이딩이 되었지만, 나머지 기능은 예외를 발생 시킨다 <br><br> ‼ 이 경우, 클라이언트는 복사 or 팩스 기능이 구현 되어 있는지 모르기 때문에 예상치 못한 버그가 발생 할 수 있다 <br><br> ❌ 위와 같은 경우는 SRP도 위반하는 경우가 될 수도 있다
+    - 🟢 해결책은 여러개의 인터페이스로 나누는 것이다
+    ``` java
+      public interface PrinterDevice {
+          void print();
+      }
+
+      public interface CopyDevice {
+          void copy();
+      }
+
+      public interface FaxDevice {
+          void fax();
+      }
+    ```
+    - #### 그리고 필요한 기능을 implements 받으면 해결 할 수 있다.
+    ``` java
+      public class MultiFunctionPrinter implements PrinterDevice, CopyDevice, FaxDevice {
+      }
+      
+      public class Printer implements PrinterDevice {
+      }
+    ```
+  --------
+  - ### DIP : 의존관계 역전 법칙 (Dependency Inversion Principle) <br><br> <img src="https://user-images.githubusercontent.com/35948339/137167155-36673fef-46af-4022-a9fc-5032e01acd6d.png" width=600>
+    - #### `추상화에 의존해야지`, `구체화에 의존하면 안된다.`
+    - #### 🟥 DIP가 지켜지지 않은 예시를 보면,
+    ``` java
+      public class Validator {
+          public void validate(Production production) {
+              //validate
+          }
+      }
+      
+      public class ProductionService {
+
+          private final Validator validator;
+          
+          public ProductionService(Validator validator) {
+              this.validator = validator;
+          }
+
+          public void validate(Production production) {
+              validator.validate(production);
+          }
+      }
+    ```
+    - #### 이 코드에 새로운 Validator가 추가 된다면 ❓
+    ``` java
+       // **새로운 Validator**
+       public class NewValidator {
+          public void validate(Production production) {
+              //validate
+          }
+      }
+      
+      // 서비스가 복잡해지기 시작한다
+      public class ProductionService {
+
+          private final Validator validator;
+          private final NewValidator newValidator;
+          
+          public ProductionService(Validator validator, NewValidator newValidator) {
+              this.validator = validator;
+              this.newValidator = newValidator;
+          }
+
+          public void validate(Production production) {
+              if ( ... ) {
+                  validator.validate(production);
+              } else if ( ... ) {
+                  newValidator.validate(production);
+              }
+          }
+
+      }
+    ```
+    - #### <img src="https://user-images.githubusercontent.com/35948339/137172123-2ab6d47c-41ef-4a41-bc9a-6365f581d5ca.png" width=500> <br> 🔼 위 그림처럼, 서비스가 기능에 의존적인 상황이 발생하게 된다
+    - #### OCP의 예제 처럼, if..else if 가 반복되는 구조를 만들고 싶지 않다면 <br><br> 🟢 인터페이스를 통해 의존성을 가지는 것을 줄일 수 있다.
+    ``` java
+      // 통합 인터페이스 생성
+      public interface Validator {
+          void validate(Production production);
+      }
+
+      public class DefaultValidator implements Validator {
+          @Override
+          public void validate(Production production) {
+              //validate
+          }
+      }
+
+      public class NewValidator implements Validator {
+          @Override
+          public void validate(Production production) {
+              //validate
+          }
+      }
+
+      public class ProductionService {
+
+          private final Validator validator;
+
+          public ProductionService(Validator validator) {
+              this.validator = validator;
+          }
+
+          public void validate(Production production) {
+              validator.validate(production);
+          }
+      }
+      
+      // 의존성을 반대로 주입시키기
+      Valid valid = new DefaultValidator();
+      Valid valid2 = new NewValidator();
+    ```
+    - #### <img src="https://user-images.githubusercontent.com/35948339/137173088-fdd9b24c-f1dd-438e-9ee4-8f68cd5ad015.png" width=500> <br> 🔼위 그림처럼, 의존성의 방향을 `역전` 시키게 만들어서 OCP의 이점 (확장에는 자유, 변경에 닫힌)을 얻을 수 있다
+    - #### 🟢 한 클래스에 의존성이 지나치게 많다면, DIP를 준수하여 지나친 의존성을 분산 시킬 수 있다.
