@@ -439,5 +439,5 @@
       Valid valid = new DefaultValidator();
       Valid valid2 = new NewValidator();
     ```
-    - #### <img src="https://user-images.githubusercontent.com/35948339/137173088-fdd9b24c-f1dd-438e-9ee4-8f68cd5ad015.png" width=500> <br> 🔼위 그림처럼, 의존성의 방향을 `역전` 시키게 만들어서 OCP의 이점 (확장에는 자유, 변경에 닫힌)을 얻을 수 있다
+    - #### <img src="https://user-images.githubusercontent.com/35948339/137173088-fdd9b24c-f1dd-438e-9ee4-8f68cd5ad015.png" width=500> <br> 🔼 위 그림처럼, 의존성의 방향을 `역전` 시키게 만들어서 OCP의 이점 (확장에는 자유, 변경에 닫힌)을 얻을 수 있다
     - #### 🟢 한 클래스에 의존성이 지나치게 많다면, DIP를 준수하여 지나친 의존성을 분산 시킬 수 있다.
