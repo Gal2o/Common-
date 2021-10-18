@@ -144,4 +144,4 @@
   - #### <img src="https://user-images.githubusercontent.com/35948339/137745662-a23b6749-9845-4f6a-be08-78eaad891e38.png" width=700> <br> foo 함수가 종료되면서, 할당 받았던 객체들은 모두 소멸된다.
 
 - ## 요약
-  - #### 위 `Dog1, Dog2` 예시 처럼, 기존 객체의 복사본인 새로운 객체가 기존 객체의 주소를 가르키고 있고, 값을 변경하려면 `setter + this`를 통해 변경할 수 있으며, Java에서 Call By Value 방식으로 작동하는 것을 알 수 있다.
+  - #### 위 `Dog1, Dog2` 예시 처럼 <br><br> 기존 객체의 복사본인 새로운 객체가 기존 객체의 주소를 가르키고 있고 <br><br> 함수 내 새로운 객체는 기존 객체에 영향을 끼치지 않고 <br><br> 값을 변경하려면 `setter + this`를 통해 변경할 수 있다. <br><br> ⭐ 그러므로 Java Call By Value 방식으로 작동하는 것을 알 수 있다.
