@@ -30,7 +30,6 @@
       System.out.println("y = " + y[0]);
       System.out.println("dog1.name = " + dog1.getName());
       System.out.println("dog2.name = " + dog2.getName()); 
-      
     } 
     
     // foo 함수
@@ -104,8 +103,43 @@
       Dog dog1 = new Dog("강아지1");    
       Dog dog2 = new Dog("강아지2"); 
   ```
-  - <img src="https://user-images.githubusercontent.com/35948339/137706741-6335ad21-c1b8-444f-ab64-c829c4764037.png" width=600> <br><br> 스택과 힙의 상황은 이런식으로 그려진다.
+  - #### <img src="https://user-images.githubusercontent.com/35948339/137706741-6335ad21-c1b8-444f-ab64-c829c4764037.png" width=600> <br> 스택과 힙의 상황은 이런식으로 그려진다.
   - #### 2️⃣ foo 호출 및 실행
-    - #### foo 함수 안에서 int x의 값이 1 증가하게 되고, 이 증가된 x는 foo 함수 내에 있는 새로운 int x의 증가가 된다.
+  ``` java
+    // foo 함수
+    public static void foo(int x, int[] y, Dog dog1, Dog dog2) { 
+      x++; 
+    } 
+  ```
+  - #### <img src="https://user-images.githubusercontent.com/35948339/137741823-d6cebba6-22d8-46b5-93e9-bcda9887eb06.png" width=700> <br> foo 함수 내의 `int x`는 새로 생긴 `int x`이고 foo 함수가 끝나면 기존 값 10은 유지 되며 출력된다.
+  --------
+  ``` java
+    // foo 함수
+    public static void foo(int x, int[] y, Dog dog1, Dog dog2) { 
+      y[0]++; 
+    } 
+  ```
+  - #### <img src="https://user-images.githubusercontent.com/35948339/137742139-24ee183e-b375-4297-bc2b-19d877a65bba.png" width=700> <br> `int[] y`는 처음 할당 받은 `y[]의 주소`를 가르킨다. 그러므로 함수 내에서 `y++`를 하면, 그대로 증가하게 된다.
+  ---------
+  ``` java
+    // foo 함수
+    public static void foo(int x, int[] y, Dog dog1, Dog dog2) { 
+      dog1 = new Dog("이름 바뀐 강아지1");
+    } 
+  ```
+  - #### <img src="https://user-images.githubusercontent.com/35948339/137742633-1f2abe4c-04f2-4d33-8e54-7a3bdaaa41df.png" width=700> <br> foo 함수 내에서 `Dog dog1` 객체를 가지고 있는 상태이다.
+  - #### <img src="https://user-images.githubusercontent.com/35948339/137743643-eb3f9384-40fe-45c8-9798-cde30dfb7970.png" width=700> <br> 그 후, `new Dog`로 새로운 객체를 할당 받아서 `이름 바뀐 강아지1`을 갖지만 foo 함수가 끝나면서 소멸된다.
+  ----------
+  ``` java
+    // foo 함수
+    public static void foo(int x, int[] y, Dog dog1, Dog dog2) { 
+      dog2.setName("이름 바뀐 강아지2"); 
+    } 
+  ```
+  - #### <img src="https://user-images.githubusercontent.com/35948339/137745351-17975397-69f0-4d14-b829-d88604e9a460.png" width=700> <br> `dog2`는 기존 객체의 주소를 그대로 갖고 있으므로, `dog2.setName`을 통해 기존 값을 변경한다.
+  -------
+  - #### 3️⃣ foo 함수 종료
+  - #### <img src="https://user-images.githubusercontent.com/35948339/137745662-a23b6749-9845-4f6a-be08-78eaad891e38.png" width=700> <br> foo 함수가 종료되면서, 할당 받았던 객체들은 모두 소멸된다.
 
-
+- ## 요약
+  - #### 위 `Dog1, Dog2` 예시 처럼, 기존 객체의 복사본인 새로운 객체가 기존 객체의 주소를 가르키고 있고, 값을 변경하려면 `setter + this`를 통해 변경할 수 있으며, Java에서 Call By Value 방식으로 작동하는 것을 알 수 있다.
