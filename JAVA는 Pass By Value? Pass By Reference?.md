@@ -61,6 +61,7 @@
   }
 ```
 - #### <img src="https://user-images.githubusercontent.com/35948339/137704508-9a14208b-83a6-4ac4-91f7-524c65cff344.png" width=600> <br><br> 변수에 메모리를 할당하면 이렇게 할당이 된다.
+------------
 - #### 여기에 참조타입인 String을 선언을 한다면 ❓
 ``` java
   // Primitive 변수 할당
@@ -74,6 +75,7 @@
   }
 ```
 - #### <img src="https://user-images.githubusercontent.com/35948339/137705376-d022d7c7-715b-4e67-8834-d79906be3942.png" width=600> <br><br> Object의 메모리 할당은 스택에 주소 값을 저장, 그 주소는 힙에 있는 어느 메모리를 가르키게 된다.
+----------
 - #### 여기에 추가로 배열을 선언 한다면 ❓
 ``` java
   // Primitive 변수 할당
