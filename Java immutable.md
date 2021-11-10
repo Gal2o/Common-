@@ -1,0 +1,12 @@
+- ## Mutable vs Immutable
+  - #### Mutable : 변할 수 있는, 잘 변하는
+  - #### Immutable : `변경할 수 없는`, 불변의
+-------
+
+- ## Java는 mutable일까 immutable일까?
+  - #### 정답은 `immutable`이다.
+  - #### 자바 같은 경우, 레퍼런스 타입의 객체는 immutable이다.
+  - #### heap 영역에 객체의 메모리가 할당이 되고, 만약 사용되지 않으면 gc의 대상이 된다.
+------
+  - ### immutable 객체의 특징
+    - #### 장점 : 
